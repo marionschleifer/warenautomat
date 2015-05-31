@@ -16,6 +16,9 @@ import warenautomat.SystemSoftware;
 public class Kasse {
 
 	private Map<Integer, Muenzsaeule> muenzsaeulen = new HashMap<Integer, Muenzsaeule>();
+	private Muenzsaeule zuFuellendeMuenzsaeule;
+	private int zuFuellendeMuenzen;
+	private int zurZeitEingenommen;
 
 	/**
 	 * Standard-Konstruktor. <br>
@@ -45,17 +48,20 @@ public class Kasse {
 	 *         Wenn ein nicht unterstützter Münzbetrag übergeben wurde: -200
 	 */
 	public int fuelleKasse(double pMuenzenBetrag, int pAnzahl) {
+		zuFuellendeMuenzsaeule = null;
+
 		int rappen = Kasse.frankenZuRappen(pMuenzenBetrag);
 		Muenzsaeule muenzsaeule = muenzsaeulen.get(rappen);
 		if (muenzsaeule == null) {
 			return -200;
 		}
-		if (muenzsaeule.hatPlatz(pAnzahl)) {
-			muenzsaeule.addCoins(pAnzahl);
-			return pAnzahl;
+		if (!muenzsaeule.hatPlatz(pAnzahl)) {
+			return -pAnzahl + muenzsaeule.vorhandenerPlatz();
 		}
-		return -pAnzahl + muenzsaeule.vorhandenerPlatz();
+		zuFuellendeMuenzsaeule = muenzsaeule;
+		zuFuellendeMuenzen = pAnzahl;
 
+		return pAnzahl;
 	}
 
 	/**
@@ -65,9 +71,8 @@ public class Kasse {
 	 * <code> fuelleKasse() </code>.
 	 */
 	public void fuelleKasseBestaetigung() {
-
-		// TODO
-
+		zuFuellendeMuenzsaeule.addCoins(zuFuellendeMuenzen);
+		zuFuellendeMuenzsaeule = null;
 	}
 
 	/**
@@ -91,18 +96,23 @@ public class Kasse {
 	 *         <code> false </code>, wenn Münzsäule bereits voll war.
 	 */
 	public boolean einnehmen(double pMuenzenBetrag) {
-
-		return false; // TODO
-
+		int rappen = Kasse.frankenZuRappen(pMuenzenBetrag);
+		Muenzsaeule muenzsaeule = muenzsaeulen.get(rappen);
+		if (muenzsaeule.hatPlatz(1)) {
+			muenzsaeule.addCoins(1);
+			zurZeitEingenommen += rappen;
+			return true;
+		} else {
+			SystemSoftware.auswerfenWechselGeld(pMuenzenBetrag);
+			return false;
+		}
 	}
 
 	/**
 	 * Bewirkt den Auswurf des Restbetrages.
 	 */
 	public void gibWechselGeld() {
-
 		// TODO
-
 	}
 
 	/**
@@ -112,13 +122,15 @@ public class Kasse {
 	 * @return Gesamtbetrag der bisher verkauften Waren.
 	 */
 	public double gibBetragVerkaufteWaren() {
-
 		return 0.0; // TODO
-
 	}
 
 	public static int frankenZuRappen(double franken) {
 		return (int) Math.round(franken * 100);
+	}
+
+	public int gibZurZeitEingenommen() {
+		return zurZeitEingenommen;
 	}
 
 }

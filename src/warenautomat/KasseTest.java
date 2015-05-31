@@ -25,6 +25,7 @@ public class KasseTest {
 	public void testFuelleKasseNichtGenuegendPlatz2() {
 		Kasse kasse = new Kasse();
 		kasse.fuelleKasse(1.0, 80);
+		kasse.fuelleKasseBestaetigung();
 		assertEquals(-10, kasse.fuelleKasse(1.0, 30));
 	}
 	
@@ -32,7 +33,9 @@ public class KasseTest {
 	public void testFuelleKasseCornerCases() {
 		Kasse kasse = new Kasse();
 		kasse.fuelleKasse(1.0, 99);
+		kasse.fuelleKasseBestaetigung();
 		assertEquals(1, kasse.fuelleKasse(1.0, 1));
+		kasse.fuelleKasseBestaetigung();
 		assertEquals(-1, kasse.fuelleKasse(1.0, 1));
 	}
 	
@@ -54,6 +57,31 @@ public class KasseTest {
 		assertEquals(-200, kasse.fuelleKasse(0.05, 2));
 		assertEquals(-200, kasse.fuelleKasse(0.01, 2));
 		assertEquals(-200, kasse.fuelleKasse(0.02, 2));
+	}
+	
+	@Test
+	public void testEinnehmenErfolgreich() {
+		Kasse kasse = new Kasse();
+		assertEquals(0, kasse.gibZurZeitEingenommen());
+		assertTrue(kasse.einnehmen(1.0));
+		assertEquals(100, kasse.gibZurZeitEingenommen());
+		assertTrue(kasse.einnehmen(1.0));
+		assertEquals(200, kasse.gibZurZeitEingenommen());
+		assertTrue(kasse.einnehmen(1.0));
+		assertEquals(300, kasse.gibZurZeitEingenommen());
+		assertTrue(kasse.einnehmen(0.5));
+		assertEquals(350, kasse.gibZurZeitEingenommen());
+	}
+	
+	@Test
+	public void testEingenommenErfolglos() {
+		Kasse kasse = new Kasse();
+		kasse.fuelleKasse(1.0, 98);
+		kasse.fuelleKasseBestaetigung();
+		assertTrue(kasse.einnehmen(1.0));
+		assertTrue(kasse.einnehmen(1.0));
+		assertFalse(kasse.einnehmen(1.0));
+		assertFalse(kasse.einnehmen(1.0));
 	}
 
 }
