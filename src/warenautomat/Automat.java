@@ -25,7 +25,6 @@ public class Automat {
 		for (int i = 0; i < mDrehteller.length; i++) {
 			mDrehteller[i] = new Drehteller();
 		}
-		;
 		mKasse = new Kasse();
 
 	}
@@ -53,8 +52,8 @@ public class Automat {
 	public void fuelleFach(int pDrehtellerNr, String pWarenName, double pPreis, Date pVerfallsDatum) {
 
 		Drehteller aufzufuellenderDrehteller = mDrehteller[pDrehtellerNr];
-		Ware ware = new Ware(pWarenName, pPreis, pVerfallsDatum);
-		aufzufuellenderDrehteller.fuelleFach(ware);
+//		Ware ware = new Ware(pWarenName, pPreis, pVerfallsDatum);
+//		aufzufuellenderDrehteller.fuelleFach(ware);
 
 	}
 
@@ -83,8 +82,8 @@ public class Automat {
 				einzelnerDrehteller.drehen();
 			}
 			Ware ware = drehteller.getWare();
-			// SystemSoftware.zeigeWarenPreisAn(pDrehtellerNr, ware.getPrice());
-			// SystemSoftware.zeigeVerfallsDatum(pDrehtellerNr, pZustand);
+//			 SystemSoftware.zeigeWarenPreisAn(pDrehtellerNr, ware.getPrice());
+//			 SystemSoftware.zeigeVerfallsDatum(pDrehtellerNr, pZustand);
 			// // fach, da es leer sein koennte -> aus
 
 		}

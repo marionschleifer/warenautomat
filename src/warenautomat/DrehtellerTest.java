@@ -20,7 +20,7 @@ public class DrehtellerTest {
 	@Test
 	public void testFuelleFach() throws ParseException {
 		Drehteller mDrehteller = new Drehteller();
-		Ware ware = new Ware("Mars", 1.2, df.parse("01.01.2016"));
+		Ware ware = new Ware("Mars", 120, df.parse("01.01.2016"));
 		mDrehteller.fuelleFach(ware);
 		assertEquals(ware, mDrehteller.getWare());
 	}
@@ -37,7 +37,7 @@ public class DrehtellerTest {
 	@Test
 	public void testEntriegeln() throws ParseException {
 		Drehteller drehteller = new Drehteller();
-		Ware ware = new Ware("Mars", 1.2, df.parse("01.01.2016"));
+		Ware ware = new Ware("Mars", 120, df.parse("01.01.2016"));
 		drehteller.fuelleFach(ware);
 		assertEquals(false, drehteller.istOffen());
 		drehteller.entriegeln();
@@ -47,7 +47,7 @@ public class DrehtellerTest {
 	@Test
 	public void testschliessen() throws ParseException {
 		Drehteller drehteller = new Drehteller();
-		Ware ware = new Ware("Mars", 1.2, df.parse("01.01.2016"));
+		Ware ware = new Ware("Mars", 120, df.parse("01.01.2016"));
 		drehteller.fuelleFach(ware);
 		drehteller.entriegeln();
 		assertEquals(true, drehteller.istOffen());
