@@ -19,6 +19,7 @@ public class Kasse {
 	private Muenzsaeule zuFuellendeMuenzsaeule;
 	private int zuFuellendeMuenzen;
 	private int zurZeitEingenommen;
+	private Statistik statistik = new Statistik();
 
 	/**
 	 * Standard-Konstruktor. <br>
@@ -131,6 +132,7 @@ public class Kasse {
 	private void gibMuenzeZurueck(int muenzBetragRappen) {
 		muenzsaeulen.get(muenzBetragRappen).removeCoins(1);
 		zurZeitEingenommen -= muenzBetragRappen;
+		SystemSoftware.auswerfenWechselGeld(Kasse.rappenZuFranken(muenzBetragRappen));
 	}
 
 	private boolean genugGrossUndGenugMuenzen(int muenzBetragRappen) {
@@ -144,7 +146,7 @@ public class Kasse {
 	 * @return Gesamtbetrag der bisher verkauften Waren.
 	 */
 	public double gibBetragVerkaufteWaren() {
-		return 0.0; // TODO
+		return Kasse.rappenZuFranken(statistik.gibBetragVerkaufteWare());
 	}
 
 	public static int frankenZuRappen(double franken) {
@@ -161,7 +163,7 @@ public class Kasse {
 
 	public void bezahleWare(Ware ware) {
 		zurZeitEingenommen -= ware.getPrice();
-		// TODO: add ware to statistik
+		statistik .verkaufteWareHinzufuegen(ware, SystemSoftware.gibAktuellesDatum());
 	}
 
 	public Muenzsaeule gibMuenzsaeule(int rappen) {

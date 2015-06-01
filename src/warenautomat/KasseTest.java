@@ -115,6 +115,19 @@ public class KasseTest {
 	}
 	
 	@Test
+	public void testGibBetragVerkaufteWaren() {
+		Ware ware = WareTest.getWare();
+		Kasse kasse = new Kasse();
+		assertEquals(0, kasse.gibBetragVerkaufteWaren(), 0.0001);
+		kasse.einnehmen(2.0);
+		kasse.bezahleWare(ware);
+		assertEquals(2.0, kasse.gibBetragVerkaufteWaren(), 0.0001);
+		kasse.einnehmen(2.0);
+		kasse.bezahleWare(ware);
+		assertEquals(4.0, kasse.gibBetragVerkaufteWaren(), 0.0001);
+	}
+	
+	@Test
 	public void testGibWechselGeld200Und100() {
 		Kasse kasse = new Kasse();
 		assertEquals(0, kasse.gibMuenzsaeule(100).getMenge());
