@@ -1,6 +1,7 @@
 package warenautomat;
 
 import java.util.Date;
+import javax.print.attribute.standard.PDLOverrideSupported;
 
 /**
  * Der Automat besteht aus 7 Drehtellern welche wiederum je aus 16 Fächern
@@ -12,8 +13,10 @@ import java.util.Date;
 public class Automat {
 
 	private static final int NR_DREHTELLER = 7;
-	private Drehteller[] mDrehteller;
+	private Drehteller[] mDrehteller = new Drehteller[NR_DREHTELLER];
 	private Kasse mKasse;
+	private int mDrehtellerNr;
+	private Statistik statistik = new Statistik();
 
 	/**
 	 * Der Standard-Konstruktor. <br>
@@ -21,12 +24,11 @@ public class Automat {
 	 * instanziert).
 	 */
 	public Automat() {
-
 		for (int i = 0; i < mDrehteller.length; i++) {
 			mDrehteller[i] = new Drehteller();
+			mDrehtellerNr = i + 1;
 		}
-		mKasse = new Kasse();
-
+		mKasse = new Kasse(statistik);
 	}
 
 	/**
@@ -49,11 +51,11 @@ public class Automat {
 	 * @param pVerfallsDatum
 	 *            Das Verfallsdatum der neuen Ware.
 	 */
-	public void fuelleFach(int pDrehtellerNr, String pWarenName, double pPreis, Date pVerfallsDatum) {
+	public void fuelleFach(int pDrehtellerNr, String pWarenName, int pPreis, Date pVerfallsDatum) {
 
 		Drehteller aufzufuellenderDrehteller = mDrehteller[pDrehtellerNr];
-//		Ware ware = new Ware(pWarenName, pPreis, pVerfallsDatum);
-//		aufzufuellenderDrehteller.fuelleFach(ware);
+		Ware ware = new Ware(pWarenName, pPreis, pVerfallsDatum);
+		aufzufuellenderDrehteller.fuelleFach(ware);
 
 	}
 
@@ -77,13 +79,13 @@ public class Automat {
 	public void drehen() {
 
 		for (Drehteller drehteller : mDrehteller) {
-			int pDrehtellerNr;
 			for (Drehteller einzelnerDrehteller : mDrehteller) {
 				einzelnerDrehteller.drehen();
+				Ware ware = drehteller.getWare();
 			}
-			Ware ware = drehteller.getWare();
-//			 SystemSoftware.zeigeWarenPreisAn(pDrehtellerNr, ware.getPrice());
-//			 SystemSoftware.zeigeVerfallsDatum(pDrehtellerNr, pZustand);
+
+			// SystemSoftware.zeigeWarenPreisAn(pDrehtellerNr, ware.getPrice());
+			// SystemSoftware.zeigeVerfallsDatum(pDrehtellerNr, pZustand);
 			// // fach, da es leer sein koennte -> aus
 
 		}
@@ -144,9 +146,11 @@ public class Automat {
 	 * @return Anzahl verkaufter Waren.
 	 */
 	public int gibVerkaufsStatistik(String pName, Date pDatum) {
+		return statistik.gibVerkaufsStatistik(pName, pDatum);
+	}
 
-		return 0; // TODO
-
+	public int getmDrehtellerNr() {
+		return mDrehtellerNr;
 	}
 
 }
