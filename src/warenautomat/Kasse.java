@@ -101,6 +101,7 @@ public class Kasse {
 		if (muenzsaeule.hatPlatz(1)) {
 			muenzsaeule.addCoins(1);
 			zurZeitEingenommen += rappen;
+			SystemSoftware.zeigeBetragAn(Kasse.rappenZuFranken(gibZurZeitEingenommen()));
 			return true;
 		} else {
 			SystemSoftware.auswerfenWechselGeld(pMuenzenBetrag);
@@ -112,7 +113,28 @@ public class Kasse {
 	 * Bewirkt den Auswurf des Restbetrages.
 	 */
 	public void gibWechselGeld() {
-		// TODO
+		while (zurZeitEingenommen != 0) {
+			if (genugGrossUndGenugMuenzen(200)) {
+				gibMuenzeZurueck(200);
+			} else if (genugGrossUndGenugMuenzen(100)) {
+				gibMuenzeZurueck(100);
+			} else if (genugGrossUndGenugMuenzen(50)) {
+				gibMuenzeZurueck(50);
+			} else if (genugGrossUndGenugMuenzen(20)) {
+				gibMuenzeZurueck(20);
+			} else if (genugGrossUndGenugMuenzen(10)) {
+				gibMuenzeZurueck(10);
+			}
+		}
+	}
+
+	private void gibMuenzeZurueck(int muenzBetragRappen) {
+		muenzsaeulen.get(muenzBetragRappen).removeCoins(1);
+		zurZeitEingenommen -= muenzBetragRappen;
+	}
+
+	private boolean genugGrossUndGenugMuenzen(int muenzBetragRappen) {
+		return zurZeitEingenommen >= muenzBetragRappen && muenzsaeulen.get(muenzBetragRappen).getMenge() > 0;
 	}
 
 	/**
@@ -129,8 +151,21 @@ public class Kasse {
 		return (int) Math.round(franken * 100);
 	}
 
+	public static double rappenZuFranken(int rappen) {
+		return rappen / 100.0;
+	}
+
 	public int gibZurZeitEingenommen() {
 		return zurZeitEingenommen;
+	}
+
+	public void bezahleWare(Ware ware) {
+		zurZeitEingenommen -= ware.getPrice();
+		// TODO: add ware to statistik
+	}
+
+	public Muenzsaeule gibMuenzsaeule(int rappen) {
+		return muenzsaeulen.get(rappen);
 	}
 
 }
