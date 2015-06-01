@@ -19,13 +19,14 @@ public class Kasse {
 	private Muenzsaeule zuFuellendeMuenzsaeule;
 	private int zuFuellendeMuenzen;
 	private int zurZeitEingenommen;
-	private Statistik statistik = new Statistik();
+	private Statistik statistik;
 
 	/**
 	 * Standard-Konstruktor. <br>
 	 * Führt die nötigen Initialisierungen durch.
 	 */
-	public Kasse() {
+	public Kasse(Statistik statistik) {
+		this.statistik = statistik;
 		muenzsaeulen.put(200, new Muenzsaeule(200));
 		muenzsaeulen.put(100, new Muenzsaeule(100));
 		muenzsaeulen.put(50, new Muenzsaeule(50));
@@ -163,7 +164,7 @@ public class Kasse {
 
 	public void bezahleWare(Ware ware) {
 		zurZeitEingenommen -= ware.getPrice();
-		statistik .verkaufteWareHinzufuegen(ware, SystemSoftware.gibAktuellesDatum());
+		statistik.verkaufteWareHinzufuegen(ware, SystemSoftware.gibAktuellesDatum());
 	}
 
 	public Muenzsaeule gibMuenzsaeule(int rappen) {

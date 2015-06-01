@@ -8,7 +8,7 @@ public class KasseTest {
 
 	@Test
 	public void testFuelleKasseNormal() {
-		Kasse kasse = new Kasse();
+		Kasse kasse = new Kasse(new Statistik());
 		assertEquals(90, kasse.fuelleKasse(1.0, 90));
 		assertEquals(5, kasse.fuelleKasse(1.0, 5));
 		assertEquals(40, kasse.fuelleKasse(2.0, 40));
@@ -17,13 +17,13 @@ public class KasseTest {
 
 	@Test
 	public void testFuelleKasseNichtGenuegendPlatz() {
-		Kasse kasse = new Kasse();
+		Kasse kasse = new Kasse(new Statistik());
 		assertEquals(-2, kasse.fuelleKasse(1.0, 102));
 	}
 
 	@Test
 	public void testFuelleKasseNichtGenuegendPlatz2() {
-		Kasse kasse = new Kasse();
+		Kasse kasse = new Kasse(new Statistik());
 		kasse.fuelleKasse(1.0, 80);
 		kasse.fuelleKasseBestaetigung();
 		assertEquals(-10, kasse.fuelleKasse(1.0, 30));
@@ -31,7 +31,7 @@ public class KasseTest {
 
 	@Test
 	public void testFuelleKasseCornerCases() {
-		Kasse kasse = new Kasse();
+		Kasse kasse = new Kasse(new Statistik());
 		kasse.fuelleKasse(1.0, 99);
 		kasse.fuelleKasseBestaetigung();
 		assertEquals(1, kasse.fuelleKasse(1.0, 1));
@@ -50,7 +50,7 @@ public class KasseTest {
 
 	@Test
 	public void testNichtUnterstuetzterMuenzbetrag() {
-		Kasse kasse = new Kasse();
+		Kasse kasse = new Kasse(new Statistik());
 		assertEquals(-200, kasse.fuelleKasse(1.5, 2));
 		assertEquals(-200, kasse.fuelleKasse(5.0, 2));
 		assertEquals(-200, kasse.fuelleKasse(0.05, 2));
@@ -60,7 +60,7 @@ public class KasseTest {
 
 	@Test
 	public void testEinnehmenErfolgreich() {
-		Kasse kasse = new Kasse();
+		Kasse kasse = new Kasse(new Statistik());
 		assertEquals(0, kasse.gibZurZeitEingenommen());
 		assertEquals(0, kasse.gibMuenzsaeule(100).getMenge());
 		
@@ -84,7 +84,7 @@ public class KasseTest {
 
 	@Test
 	public void testEingenommenErfolglos() {
-		Kasse kasse = new Kasse();
+		Kasse kasse = new Kasse(new Statistik());
 		kasse.fuelleKasse(1.0, 98);
 		kasse.fuelleKasseBestaetigung();
 		assertTrue(kasse.einnehmen(1.0));
@@ -105,7 +105,7 @@ public class KasseTest {
 	@Test
 	public void testBezahleWare() {
 		Ware ware = WareTest.getWare();
-		Kasse kasse = new Kasse();
+		Kasse kasse = new Kasse(new Statistik());
 		kasse.einnehmen(0.2);
 		kasse.einnehmen(2.0);
 		kasse.einnehmen(0.5);
@@ -117,7 +117,7 @@ public class KasseTest {
 	@Test
 	public void testGibBetragVerkaufteWaren() {
 		Ware ware = WareTest.getWare();
-		Kasse kasse = new Kasse();
+		Kasse kasse = new Kasse(new Statistik());
 		assertEquals(0, kasse.gibBetragVerkaufteWaren(), 0.0001);
 		kasse.einnehmen(2.0);
 		kasse.bezahleWare(ware);
@@ -129,7 +129,7 @@ public class KasseTest {
 	
 	@Test
 	public void testGibWechselGeld200Und100() {
-		Kasse kasse = new Kasse();
+		Kasse kasse = new Kasse(new Statistik());
 		assertEquals(0, kasse.gibMuenzsaeule(100).getMenge());
 		assertEquals(0, kasse.gibZurZeitEingenommen());
 		kasse.gibWechselGeld();
@@ -148,7 +148,7 @@ public class KasseTest {
 	
 	@Test
 	public void testGibWechselGeldAlle() {
-		Kasse kasse = new Kasse();
+		Kasse kasse = new Kasse(new Statistik());
 		kasse.einnehmen(2.0);
 		kasse.einnehmen(1.0);
 		kasse.einnehmen(0.5);
@@ -171,7 +171,7 @@ public class KasseTest {
 	
 	@Test
 	public void testGibWechselSpezialfall() {
-		Kasse kasse = new Kasse();
+		Kasse kasse = new Kasse(new Statistik());
 		kasse.gibMuenzsaeule(200).addCoins(6);
 		kasse.gibMuenzsaeule(100).addCoins(6);
 		kasse.gibMuenzsaeule(50).addCoins(6);
@@ -197,7 +197,7 @@ public class KasseTest {
 	
 	@Test
 	public void testKasseNichtGefuellt() {
-		Kasse kasse = new Kasse();
+		Kasse kasse = new Kasse(new Statistik());
 		kasse.einnehmen(0.2);
 		kasse.einnehmen(0.2);
 		kasse.einnehmen(0.2);
