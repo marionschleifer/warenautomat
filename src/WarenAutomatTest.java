@@ -32,15 +32,15 @@ public class WarenAutomatTest {
       Automat automat = new Automat();
       System.out.println("=== Drehteller-Test: =================================");
       
-      System.out.println("*** Drehteller Nr.1 mit einem \"Eins\" füllen:");
-      automat.fuelleFach(1, "Eins", 1.00, df.parse("01.01.2001"));
-      System.out.println("*** automat.drehen():");      
-      automat.drehen();
-      System.out.println("*** Drehteller Nr.2 mit einem \"Zwei\" füllen:");
-      automat.fuelleFach(2, "Zwei", 2.00, df.parse("01.01.2002"));
-      SystemSoftware.output(false);
-      System.out.println("*** automat.drehen():");      
-      automat.drehen();
+//      System.out.println("*** Drehteller Nr.1 mit einem \"Eins\" füllen:");
+//      automat.fuelleFach(1, "Eins", 1.00, df.parse("01.01.2001"));
+//      System.out.println("*** automat.drehen():");      
+//      automat.drehen();
+//      System.out.println("*** Drehteller Nr.2 mit einem \"Zwei\" füllen:");
+//      automat.fuelleFach(2, "Zwei", 2.00, df.parse("01.01.2002"));
+//      SystemSoftware.output(false);
+//      System.out.println("*** automat.drehen():");      
+//      automat.drehen();
 //      SystemSoftware.output(true);
 //      System.out.println("*** Drehteller Nr.3 mit einem \"Drei\" füllen:");
 //      automat.fuelleFach(3, "Drei", 3.00, df.parse("01.01.2003"));
