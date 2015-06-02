@@ -8,7 +8,6 @@ public class Muenzsaeule {
 
 	public Muenzsaeule(int muenzart) {
 		this.muenzart = muenzart;
-
 	}
 
 	public int getMuenzart() {
@@ -28,7 +27,8 @@ public class Muenzsaeule {
 		}
 
 		menge += anzahlNeueMuenzen;
-
+		
+		SystemSoftware.zeigeMuenzenInGui(getMuenzart() / 100.0, getMenge());
 	}
 
 	public boolean hatPlatz(int anzahlNeueMuenzen) {
@@ -41,6 +41,7 @@ public class Muenzsaeule {
 		}
 		menge -= anzahlMuenzen;
 
+		SystemSoftware.zeigeMuenzenInGui(getMuenzart() / 100.0, getMenge());
 	}
 
 	public int vorhandenerPlatz() {

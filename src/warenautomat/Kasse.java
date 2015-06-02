@@ -25,8 +25,17 @@ public class Kasse {
 	 * Standard-Konstruktor. <br>
 	 * Führt die nötigen Initialisierungen durch.
 	 */
+	public Kasse() {
+		this.statistik = new Statistik();
+		initMuenzsaeulen();
+	}
+
 	public Kasse(Statistik statistik) {
 		this.statistik = statistik;
+		initMuenzsaeulen();
+	}
+
+	public void initMuenzsaeulen() {
 		muenzsaeulen.put(200, new Muenzsaeule(200));
 		muenzsaeulen.put(100, new Muenzsaeule(100));
 		muenzsaeulen.put(50, new Muenzsaeule(50));
@@ -40,7 +49,7 @@ public class Kasse {
 	 * Use-Case "Kasse auffüllen").
 	 * 
 	 * @param pMuenzenBetrag
-	 *            Betrag der Münzart in Franken.
+	 *            Betrag der Münzart in Franken. Muss positiv sein.
 	 * @param pAnzahl
 	 *            Anzahl der neu eingelegten Münzen.
 	 * @return Wenn es genügend Platz in der Münzsäule hat: die Anzahl Münzen
@@ -128,6 +137,7 @@ public class Kasse {
 				gibMuenzeZurueck(10);
 			}
 		}
+		SystemSoftware.zeigeBetragAn(0);
 	}
 
 	private void gibMuenzeZurueck(int muenzBetragRappen) {

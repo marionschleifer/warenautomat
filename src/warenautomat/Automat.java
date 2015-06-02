@@ -51,7 +51,10 @@ public class Automat {
 	public void fuelleFach(int pDrehtellerNr, String pWarenName, double pPreis, Date pVerfallsDatum) {
 		Drehteller aufzufuellenderDrehteller = gibDrehteller(pDrehtellerNr);
 		Ware ware = new Ware(pWarenName, Kasse.frankenZuRappen(pPreis), pVerfallsDatum);
+		SystemSoftware.zeigeWarenPreisAn(pDrehtellerNr, pPreis);
+		SystemSoftware.zeigeVerfallsDatum(pDrehtellerNr, ware.gibZustand());
 		aufzufuellenderDrehteller.fuelleFach(ware);
+		SystemSoftware.zeigeWareInGui(pDrehtellerNr, pWarenName, pVerfallsDatum);
 	}
 
 	/**
@@ -72,6 +75,7 @@ public class Automat {
 	 * durchgeführt wird wenn ein Fach offen ist.
 	 */
 	public void drehen() {
+		SystemSoftware.dreheWarenInGui();
 		for (int drehtellerNr = 1; drehtellerNr <= drehtellerListe.length; drehtellerNr++) {
 			Drehteller drehteller = gibDrehteller(drehtellerNr);
 			drehteller.drehen();
@@ -136,6 +140,7 @@ public class Automat {
 			SystemSoftware.zeigeVerfallsDatum(pDrehtellerNr, 0);
 
 			gibDrehteller(pDrehtellerNr).fuelleFach(null);
+			SystemSoftware.zeigeWareInGui(pDrehtellerNr, null, null);
 
 			return true;
 		}

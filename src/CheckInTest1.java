@@ -15,7 +15,6 @@ $Revision    : 1.7 $  $Date: 2015/05/24 18:59:15 $
 //345678901234567890123456789012345678901234567890123456789012345678901234567890
 //==============================================================================
 
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Locale;
@@ -24,42 +23,39 @@ import warenautomat.*;
 
 public class CheckInTest1 {
 
-  static public void main(String pArgs[]) throws ParseException {
+	static public void main(String pArgs[]) throws ParseException {
 
-  DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.GERMAN);
-  
-  // Test der Automaten-Schnittstelle:
-  {
-    Automat automat = new Automat(); 
-    automat.fuelleFach(1, "Name", 1.0, df. parse(" 01.01.2100"));
-    Kasse kasse = automat.gibKasse();
-    automat.drehen();
-    boolean b = automat.oeffnen(1);
-    double d = automat.gibTotalenWarenWert();
-    int anzahl = automat.gibVerkaufsStatistik("Name", df. parse(" 01.01.2100"));
-  }
-  
-  // Test der Kassen-Schnittstelle:
-  {
-    Automat automat = new Automat(); 
-    Kasse kasse = automat.gibKasse();
-    if (kasse == null) {
-      kasse = new Kasse();
-    }
-    int result = kasse.fuelleKasse(1.0, 10);
-    kasse.fuelleKasseBestaetigung();
+		DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.GERMAN);
 
-    kasse.einnehmen(1.0);
-    kasse.gibWechselGeld();
-    kasse.gibBetragVerkaufteWaren();
-  }
+		// Test der Automaten-Schnittstelle:
+		{
+			Automat automat = new Automat();
+			automat.fuelleFach(1, "Name", 1.0, df.parse(" 01.01.2100"));
+			Kasse kasse = automat.gibKasse();
+			automat.drehen();
+			boolean b = automat.oeffnen(1);
+			double d = automat.gibTotalenWarenWert();
+			int anzahl = automat.gibVerkaufsStatistik("Name", df.parse(" 01.01.2100"));
+		}
 
+		// Test der Kassen-Schnittstelle:
+		{
+			Automat automat = new Automat();
+			Kasse kasse = automat.gibKasse();
+			if (kasse == null) {
+				kasse = new Kasse();
+			}
+			int result = kasse.fuelleKasse(1.0, 10);
+			kasse.fuelleKasseBestaetigung();
 
-  } // main()
+			kasse.einnehmen(1.0);
+			kasse.gibWechselGeld();
+			kasse.gibBetragVerkaufteWaren();
+		}
 
-} // CheckInTest
+	} // main()
 
-      
+} // CheckInTest      
 
 /* Session-Log:
 SystemSoftware::zeigeWarenPreisAn():  1: 1.0

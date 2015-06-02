@@ -22,67 +22,65 @@ import java.util.Locale;
 
 import warenautomat.*;
 
-public class WarenAutomatTest { 
+public class WarenAutomatTest {
 
-  public static void main(String[] args) throws ParseException {
+	public static void main(String[] args) throws ParseException {
 
-    DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.GERMAN);
+		DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.GERMAN);
 
-    { 
-      Automat automat = new Automat();
-      System.out.println("=== Drehteller-Test: =================================");
-      
-//      System.out.println("*** Drehteller Nr.1 mit einem \"Eins\" füllen:");
-//      automat.fuelleFach(1, "Eins", 1.00, df.parse("01.01.2001"));
-//      System.out.println("*** automat.drehen():");      
-//      automat.drehen();
-//      System.out.println("*** Drehteller Nr.2 mit einem \"Zwei\" füllen:");
-//      automat.fuelleFach(2, "Zwei", 2.00, df.parse("01.01.2002"));
-//      SystemSoftware.output(false);
-//      System.out.println("*** automat.drehen():");      
-//      automat.drehen();
-//      SystemSoftware.output(true);
-//      System.out.println("*** Drehteller Nr.3 mit einem \"Drei\" füllen:");
-//      automat.fuelleFach(3, "Drei", 3.00, df.parse("01.01.2003"));
-//      SystemSoftware.output(false);
-//      System.out.println("*** Drehen bis Fach Nr.16 vor der Öffnung ist:");
-//      for (int i = 4; i <= 16; i++) {
-//        automat.drehen();
-//      }
-//      SystemSoftware.output(true);
-//      System.out.println("*** automat.drehen(): jetzt Fach Nr. 1:");      
-//      automat.drehen();
-//      System.out.println("*** automat.drehen(): jetzt Fach Nr. 2:");      
-//      automat.drehen();
-//      System.out.println("*** automat.drehen(): jetzt Fach Nr. 3:");      
-//      automat.drehen();
-//        
-//      System.out.println("=== Drehteller-Test. =================================");
-//   
-//      System.out.println("=== Öffnen-Test: =====================================");
-//
-//      System.out.println("*** Drehteller Nr.5 mit einem Mars füllen:");
-//      automat.fuelleFach(5, "Mars", 1.50, df.parse("01.01.2100"));
-//      System.out.println("*** Automat.gibTotalenWarenWert() = " 
-//          + automat.gibTotalenWarenWert());
-//      Kasse kasse = automat.gibKasse();
-//      System.out.println("*** kasse.einnehmen(1.00):");
-//      kasse.einnehmen(1.00);
-//      System.out.println("*** kasse.einnehmen(0.50):");
-//      kasse.einnehmen(0.50);
-//      System.out.println("*** automat.oeffnen(5):");
-//      System.out.println("*** automat.oeffnen(5): " + automat.oeffnen(5));
-//      
-//      System.out.println("=== Öffnen-Test. =====================================");
-//     
-//      // ... etc. ...
-      
-    }
-    
-  }
+		{
+			Automat automat = new Automat();
+			System.out.println("=== Drehteller-Test: =================================");
+
+			System.out.println("*** Drehteller Nr.1 mit einem \"Eins\" füllen:");
+			automat.fuelleFach(1, "Eins", 1.00, df.parse("01.01.2001"));
+			System.out.println("*** automat.drehen():");
+			automat.drehen();
+			System.out.println("*** Drehteller Nr.2 mit einem \"Zwei\" füllen:");
+			automat.fuelleFach(2, "Zwei", 2.00, df.parse("01.01.2002"));
+			SystemSoftware.output(false);
+			System.out.println("*** automat.drehen():");
+			automat.drehen();
+			SystemSoftware.output(true);
+			System.out.println("*** Drehteller Nr.3 mit einem \"Drei\" füllen:");
+			automat.fuelleFach(3, "Drei", 3.00, df.parse("01.01.2003"));
+			SystemSoftware.output(false);
+			System.out.println("*** Drehen bis Fach Nr.16 vor der Öffnung ist:");
+			for (int i = 4; i <= 16; i++) {
+				automat.drehen();
+			}
+			SystemSoftware.output(true);
+			System.out.println("*** automat.drehen(): jetzt Fach Nr. 1:");
+			automat.drehen();
+			System.out.println("*** automat.drehen(): jetzt Fach Nr. 2:");
+			automat.drehen();
+			System.out.println("*** automat.drehen(): jetzt Fach Nr. 3:");
+			automat.drehen();
+
+			System.out.println("=== Drehteller-Test. =================================");
+
+			System.out.println("=== Öffnen-Test: =====================================");
+
+			System.out.println("*** Drehteller Nr.5 mit einem Mars füllen:");
+			automat.fuelleFach(5, "Mars", 1.50, df.parse("01.01.2100"));
+			System.out.println("*** Automat.gibTotalenWarenWert() = " + automat.gibTotalenWarenWert());
+			Kasse kasse = automat.gibKasse();
+			System.out.println("*** kasse.einnehmen(1.00):");
+			kasse.einnehmen(1.00);
+			System.out.println("*** kasse.einnehmen(0.50):");
+			kasse.einnehmen(0.50);
+			System.out.println("*** automat.oeffnen(5):");
+			System.out.println("*** automat.oeffnen(5): " + automat.oeffnen(5));
+
+			System.out.println("=== Öffnen-Test. =====================================");
+
+			// ... etc. ...
+
+		}
+
+	}
 
 }
-
 
 /* Session-Log:
 
