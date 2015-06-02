@@ -27,15 +27,15 @@ public class Kasse {
 	 */
 	public Kasse() {
 		this.statistik = new Statistik();
-		initMuenzsaeulen();
+		erstelleMuenzsaeulen();
 	}
 
 	public Kasse(Statistik statistik) {
 		this.statistik = statistik;
-		initMuenzsaeulen();
+		erstelleMuenzsaeulen();
 	}
 
-	public void initMuenzsaeulen() {
+	public void erstelleMuenzsaeulen() {
 		muenzsaeulen.put(200, new Muenzsaeule(200));
 		muenzsaeulen.put(100, new Muenzsaeule(100));
 		muenzsaeulen.put(50, new Muenzsaeule(50));
@@ -67,6 +67,7 @@ public class Kasse {
 			return -200;
 		}
 		if (!muenzsaeule.hatPlatz(pAnzahl)) {
+			zuFuellendeMuenzsaeule = muenzsaeule; zuFuellendeMuenzen = muenzsaeule.vorhandenerPlatz();
 			return -pAnzahl + muenzsaeule.vorhandenerPlatz();
 		}
 		zuFuellendeMuenzsaeule = muenzsaeule;
