@@ -1,6 +1,7 @@
 package warenautomat;
 
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Der Automat besteht aus 7 Drehtellern, welche wiederum je aus 16 Fächern
@@ -15,6 +16,7 @@ public class Automat {
 	private Drehteller[] drehtellerListe = new Drehteller[NR_DREHTELLER];
 	private Kasse kasse;
 	private Statistik statistik = new Statistik();
+	private HashMap<String, Bestellgrenze> bestellgrenzen = new HashMap<String, Bestellgrenze>();
 
 	/**
 	 * Der Standard-Konstruktor. <br>
@@ -142,6 +144,8 @@ public class Automat {
 			gibDrehteller(pDrehtellerNr).fuelleFach(null);
 			SystemSoftware.zeigeWareInGui(pDrehtellerNr, null, null);
 
+			// TODO: if grenzeErreicht -> Systemsoftware.bestellen
+
 			return true;
 		}
 		return false;
@@ -187,4 +191,41 @@ public class Automat {
 		return drehtellerListe[drehtellerNr - 1];
 	}
 
+	/**
+	 * Konfiguration einer automatischen Bestellung. <br>
+	 * Der Automat setzt automatisch Bestellungen ab mittels
+	 * <code> SystemSoftware.bestellen() </code> wenn eine Ware ausgeht.
+	 * 
+	 * @param pWarenName
+	 *            Warenname derjenigen Ware, für welche eine automatische
+	 *            Bestellung konfiguriert wird.
+	 * @param pGrenze
+	 *            Grenze bei welcher Anzahl von verbleibenden, nicht
+	 *            abgelaufener Waren im Automat eine Bestellung abgesetzt werden
+	 *            soll (Bestellung wenn Waren-Anzahl nicht abgelaufener Waren <=
+	 *            pGrenze).
+	 * @param pBestellAnzahl
+	 *            Wieviele neue Waren jeweils bestellt werden sollen.
+	 */
+	public void konfiguriereBestellung(String pWarenName, int pGrenze, int pBestellAnzahl) {
+		Bestellgrenze bestellgrenze = new Bestellgrenze(pWarenName, pGrenze, pBestellAnzahl);
+		bestellgrenzen.put(pWarenName, bestellgrenze);
+	}
+
+	public HashMap<String, Bestellgrenze> getBestellGrenzen() {
+		return bestellgrenzen;
+	}
+
+	public boolean grenzeErreicht(String warenName) {
+		int warenMenge = 0;
+		for (Drehteller drehteller : drehtellerListe) {
+			warenMenge += drehteller.gibWarenMenge(warenName);
+			if (warenMenge <= getBestellGrenzen().get(warenName).getBestellGrenze()) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return false;
+	}
 }

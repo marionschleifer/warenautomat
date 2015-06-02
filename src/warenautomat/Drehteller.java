@@ -1,9 +1,5 @@
 package warenautomat;
 
-import java.util.Date;
-
-import warenautomat.SystemSoftware;
-
 public class Drehteller {
 
 	public static final int NR_FAECHER = 16;
@@ -45,6 +41,16 @@ public class Drehteller {
 			}
 		}
 		return wert;
+	}
+
+	public int gibWarenMenge(String warenName) {
+		int menge = 0;
+		for (Fach fach : mFach) {
+			if ((fach.istWareImFach()) && (warenName.equals(fach.getWare().getName()))) {
+				menge += 1;
+			}
+		}
+		return menge;
 	}
 
 }
