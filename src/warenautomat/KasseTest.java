@@ -63,19 +63,19 @@ public class KasseTest {
 		Kasse kasse = new Kasse(new Statistik());
 		assertEquals(0, kasse.gibZurZeitEingenommen());
 		assertEquals(0, kasse.gibMuenzsaeule(100).getMenge());
-		
+
 		assertTrue(kasse.einnehmen(1.0));
 		assertEquals(1, kasse.gibMuenzsaeule(100).getMenge());
 		assertEquals(100, kasse.gibZurZeitEingenommen());
-		
+
 		assertTrue(kasse.einnehmen(1.0));
 		assertEquals(2, kasse.gibMuenzsaeule(100).getMenge());
 		assertEquals(200, kasse.gibZurZeitEingenommen());
-		
+
 		assertTrue(kasse.einnehmen(1.0));
 		assertEquals(3, kasse.gibMuenzsaeule(100).getMenge());
 		assertEquals(300, kasse.gibZurZeitEingenommen());
-		
+
 		assertEquals(0, kasse.gibMuenzsaeule(50).getMenge());
 		assertTrue(kasse.einnehmen(0.5));
 		assertEquals(1, kasse.gibMuenzsaeule(50).getMenge());
@@ -104,7 +104,7 @@ public class KasseTest {
 
 	@Test
 	public void testBezahleWare() {
-		Ware ware = WareTest.getWare();
+		Ware ware = WareTest.getMars();
 		Kasse kasse = new Kasse(new Statistik());
 		kasse.einnehmen(0.2);
 		kasse.einnehmen(2.0);
@@ -113,10 +113,10 @@ public class KasseTest {
 		kasse.bezahleWare(ware);
 		assertEquals(70, kasse.gibZurZeitEingenommen());
 	}
-	
+
 	@Test
 	public void testGibBetragVerkaufteWaren() {
-		Ware ware = WareTest.getWare();
+		Ware ware = WareTest.getMars();
 		Kasse kasse = new Kasse(new Statistik());
 		assertEquals(0, kasse.gibBetragVerkaufteWaren(), 0.0001);
 		kasse.einnehmen(2.0);
@@ -126,7 +126,7 @@ public class KasseTest {
 		kasse.bezahleWare(ware);
 		assertEquals(4.0, kasse.gibBetragVerkaufteWaren(), 0.0001);
 	}
-	
+
 	@Test
 	public void testGibWechselGeld200Und100() {
 		Kasse kasse = new Kasse(new Statistik());
@@ -143,9 +143,9 @@ public class KasseTest {
 		kasse.gibWechselGeld();
 		assertEquals(0, kasse.gibZurZeitEingenommen());
 		assertEquals(0, kasse.gibMuenzsaeule(100).getMenge());
-		assertEquals(0, kasse.gibMuenzsaeule(200).getMenge());	
+		assertEquals(0, kasse.gibMuenzsaeule(200).getMenge());
 	}
-	
+
 	@Test
 	public void testGibWechselGeldAlle() {
 		Kasse kasse = new Kasse(new Statistik());
@@ -164,11 +164,11 @@ public class KasseTest {
 		assertEquals(0, kasse.gibZurZeitEingenommen());
 		assertEquals(0, kasse.gibMuenzsaeule(200).getMenge());
 		assertEquals(0, kasse.gibMuenzsaeule(100).getMenge());
-		assertEquals(0, kasse.gibMuenzsaeule(50).getMenge());	
-		assertEquals(0, kasse.gibMuenzsaeule(20).getMenge());	
-		assertEquals(0, kasse.gibMuenzsaeule(10).getMenge());	
+		assertEquals(0, kasse.gibMuenzsaeule(50).getMenge());
+		assertEquals(0, kasse.gibMuenzsaeule(20).getMenge());
+		assertEquals(0, kasse.gibMuenzsaeule(10).getMenge());
 	}
-	
+
 	@Test
 	public void testGibWechselSpezialfall() {
 		Kasse kasse = new Kasse(new Statistik());
@@ -194,7 +194,7 @@ public class KasseTest {
 		assertEquals(9, kasse.gibMuenzsaeule(20).getMenge());
 		assertEquals(5, kasse.gibMuenzsaeule(10).getMenge());
 	}
-	
+
 	@Test
 	public void testKasseNichtGefuellt() {
 		Kasse kasse = new Kasse(new Statistik());
@@ -205,6 +205,43 @@ public class KasseTest {
 		assertEquals(4, kasse.gibMuenzsaeule(20).getMenge());
 		kasse.gibWechselGeld();
 		assertEquals(0, kasse.gibMuenzsaeule(20).getMenge());
+	}
+
+	@Test
+	public void testHatGenugWechselgeld100er() {
+		Kasse kasse = new Kasse(new Statistik());
+		assertFalse(kasse.hatGenugWechselgeld(100));
+		kasse.fuelleKasse(1.0, 1);
+		kasse.fuelleKasseBestaetigung();
+		assertTrue(kasse.hatGenugWechselgeld(100));
+		assertFalse(kasse.hatGenugWechselgeld(200));
+		kasse.fuelleKasse(1.0, 1);
+		kasse.fuelleKasseBestaetigung();
+		assertTrue(kasse.hatGenugWechselgeld(100));
+		assertTrue(kasse.hatGenugWechselgeld(200));
+	}
+
+	@Test
+	public void testHatGenugWechselgeldAlle() {
+		Kasse kasse = new Kasse(new Statistik());
+		assertFalse(kasse.hatGenugWechselgeld(100));
+		assertFalse(kasse.hatGenugWechselgeld(1050));
+		assertFalse(kasse.hatGenugWechselgeld(1060));
+		assertFalse(kasse.hatGenugWechselgeld(1070));
+		kasse.fuelleKasse(2.0, 2);
+		kasse.fuelleKasseBestaetigung();
+		kasse.fuelleKasse(1.0, 3);
+		kasse.fuelleKasseBestaetigung();
+		kasse.fuelleKasse(0.5, 4);
+		kasse.fuelleKasseBestaetigung();
+		kasse.fuelleKasse(0.2, 5);
+		kasse.fuelleKasseBestaetigung();
+		kasse.fuelleKasse(0.1, 6);
+		kasse.fuelleKasseBestaetigung();
+		assertTrue(kasse.hatGenugWechselgeld(1050));
+		assertTrue(kasse.hatGenugWechselgeld(1060));
+		assertFalse(kasse.hatGenugWechselgeld(1061));
+		assertFalse(kasse.hatGenugWechselgeld(1070));
 	}
 
 }

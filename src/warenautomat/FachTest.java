@@ -8,7 +8,7 @@ public class FachTest {
 
 	@Test
 	public void testWareImFach() {
-		Ware ware = WareTest.getWare();
+		Ware ware = WareTest.getMars();
 		Fach fach = new Fach();
 		assertEquals(false, fach.istWareImFach());
 		fach.fuelleFach(ware);

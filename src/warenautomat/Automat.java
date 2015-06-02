@@ -1,10 +1,9 @@
 package warenautomat;
 
 import java.util.Date;
-import javax.print.attribute.standard.PDLOverrideSupported;
 
 /**
- * Der Automat besteht aus 7 Drehtellern welche wiederum je aus 16 Fächern
+ * Der Automat besteht aus 7 Drehtellern, welche wiederum je aus 16 Fächern
  * bestehen. <br>
  * Der erste Drehteller und das jeweils erste Fach haben jeweils die Nummer 1
  * (nicht 0!). <br>
@@ -13,9 +12,8 @@ import javax.print.attribute.standard.PDLOverrideSupported;
 public class Automat {
 
 	private static final int NR_DREHTELLER = 7;
-	private Drehteller[] mDrehteller = new Drehteller[NR_DREHTELLER];
-	private Kasse mKasse;
-	private int mDrehtellerNr;
+	private Drehteller[] drehtellerListe = new Drehteller[NR_DREHTELLER];
+	private Kasse kasse;
 	private Statistik statistik = new Statistik();
 
 	/**
@@ -24,11 +22,10 @@ public class Automat {
 	 * instanziert).
 	 */
 	public Automat() {
-		for (int i = 0; i < mDrehteller.length; i++) {
-			mDrehteller[i] = new Drehteller();
-			mDrehtellerNr = i + 1;
+		for (int i = 0; i < drehtellerListe.length; i++) {
+			drehtellerListe[i] = new Drehteller();
 		}
-		mKasse = new Kasse(statistik);
+		kasse = new Kasse(statistik);
 	}
 
 	/**
@@ -51,19 +48,17 @@ public class Automat {
 	 * @param pVerfallsDatum
 	 *            Das Verfallsdatum der neuen Ware.
 	 */
-	public void fuelleFach(int pDrehtellerNr, String pWarenName, int pPreis, Date pVerfallsDatum) {
-
-		Drehteller aufzufuellenderDrehteller = mDrehteller[pDrehtellerNr];
-		Ware ware = new Ware(pWarenName, pPreis, pVerfallsDatum);
+	public void fuelleFach(int pDrehtellerNr, String pWarenName, double pPreis, Date pVerfallsDatum) {
+		Drehteller aufzufuellenderDrehteller = gibDrehteller(pDrehtellerNr);
+		Ware ware = new Ware(pWarenName, Kasse.frankenZuRappen(pPreis), pVerfallsDatum);
 		aufzufuellenderDrehteller.fuelleFach(ware);
-
 	}
 
 	/**
 	 * Gibt die Objekt-Referenz auf die <em> Kasse </em> zurück.
 	 */
 	public Kasse gibKasse() {
-		return mKasse;
+		return kasse;
 	}
 
 	/**
@@ -77,17 +72,17 @@ public class Automat {
 	 * durchgeführt wird wenn ein Fach offen ist.
 	 */
 	public void drehen() {
-
-		for (Drehteller drehteller : mDrehteller) {
-			for (Drehteller einzelnerDrehteller : mDrehteller) {
-				einzelnerDrehteller.drehen();
-				Ware ware = drehteller.getWare();
+		for (int drehtellerNr = 1; drehtellerNr <= drehtellerListe.length; drehtellerNr++) {
+			Drehteller drehteller = gibDrehteller(drehtellerNr);
+			drehteller.drehen();
+			Ware ware = drehteller.getWare();
+			if (ware == null) {
+				SystemSoftware.zeigeWarenPreisAn(drehtellerNr, 0);
+				SystemSoftware.zeigeVerfallsDatum(drehtellerNr, 0);
+			} else {
+				SystemSoftware.zeigeWarenPreisAn(drehtellerNr, Kasse.rappenZuFranken(ware.getPrice()));
+				SystemSoftware.zeigeVerfallsDatum(drehtellerNr, ware.gibZustand());
 			}
-
-			// SystemSoftware.zeigeWarenPreisAn(pDrehtellerNr, ware.getPrice());
-			// SystemSoftware.zeigeVerfallsDatum(pDrehtellerNr, pZustand);
-			// // fach, da es leer sein koennte -> aus
-
 		}
 	}
 
@@ -116,8 +111,35 @@ public class Automat {
 	 * @return Wenn alles o.k. <code> true </code>, sonst <code> false </code>.
 	 */
 	public boolean oeffnen(int pDrehtellerNr) {
+		if (gibFachInhalt(pDrehtellerNr) != null) {
+			Ware ware = gibFachInhalt(pDrehtellerNr);
 
-		return false; // TODO
+			if (ware.istAbgelaufen()) {
+				return false;
+			}
+
+			if (kasse.gibZurZeitEingenommen() < ware.getPrice()) {
+				SystemSoftware.zeigeZuWenigGeldAn();
+				return false;
+			}
+
+			if (!kasse.hatGenugWechselgeld(ware.getPrice())) {
+				SystemSoftware.zeigeZuWenigWechselGeldAn();
+				return false;
+			}
+
+			kasse.bezahleWare(ware);
+			kasse.gibWechselGeld();
+
+			SystemSoftware.entriegeln(pDrehtellerNr);
+			SystemSoftware.zeigeWarenPreisAn(pDrehtellerNr, 0);
+			SystemSoftware.zeigeVerfallsDatum(pDrehtellerNr, 0);
+
+			gibDrehteller(pDrehtellerNr).fuelleFach(null);
+
+			return true;
+		}
+		return false;
 
 	}
 
@@ -130,9 +152,11 @@ public class Automat {
 	 * @return Der totale Warenwert des Automaten.
 	 */
 	public double gibTotalenWarenWert() {
-
-		return 0.0; // TODO
-
+		int totalerWert = 0;
+		for (Drehteller drehteller : drehtellerListe) {
+			totalerWert += drehteller.gibTotalenWarenWert();
+		}
+		return Kasse.rappenZuFranken(totalerWert);
 	}
 
 	/**
@@ -149,8 +173,13 @@ public class Automat {
 		return statistik.gibVerkaufsStatistik(pName, pDatum);
 	}
 
-	public int getmDrehtellerNr() {
-		return mDrehtellerNr;
+	public Ware gibFachInhalt(int drehtellerNr) {
+		Ware ware = gibDrehteller(drehtellerNr).getWare();
+		return ware;
+	}
+
+	public Drehteller gibDrehteller(int drehtellerNr) {
+		return drehtellerListe[drehtellerNr - 1];
 	}
 
 }

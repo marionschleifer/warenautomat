@@ -6,10 +6,9 @@ import warenautomat.SystemSoftware;
 
 public class Drehteller {
 
-	private static final int NR_FAECHER = 16;
+	public static final int NR_FAECHER = 16;
 	private Fach[] mFach = new Fach[NR_FAECHER];
-	private int fachAmAusgang = 1;
-	private boolean istOffen = false;
+	private int fachAmAusgang = 0;
 
 	public Drehteller() {
 		for (int i = 0; i < mFach.length; i++) {
@@ -17,21 +16,16 @@ public class Drehteller {
 		}
 	}
 
-	public boolean istOffen() {
-		return istOffen;
-	}
-
 	public void fuelleFach(Ware ware) {
 		Fach fach = mFach[fachAmAusgang];
 		fach.fuelleFach(ware);
-
 	}
 
 	public void drehen() {
-		if (fachAmAusgang <= NR_FAECHER) {
+		if (fachAmAusgang < NR_FAECHER - 1) {
 			fachAmAusgang++;
 		} else {
-			fachAmAusgang = 1;
+			fachAmAusgang = 0;
 		}
 	}
 
@@ -42,22 +36,15 @@ public class Drehteller {
 	public int getFachAmAusgang() {
 		return fachAmAusgang;
 	}
-	
-//	TODO entriegeln nur wenn genug Guthabene
 
-	public boolean entriegeln() {  
-		if (getWare() != null) {
-			istOffen = true;
-			return true;
-		} else {
-			return false;
+	public int gibTotalenWarenWert() {
+		int wert = 0;
+		for (Fach fach : mFach) {
+			if (fach.istWareImFach()) {
+				wert += fach.getWare().getPrice();
+			}
 		}
-
-	}
-
-	public void schliessen() {
-		istOffen = false;
-
+		return wert;
 	}
 
 }

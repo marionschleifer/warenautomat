@@ -171,4 +171,33 @@ public class Kasse {
 		return muenzsaeulen.get(rappen);
 	}
 
+	public boolean hatGenugWechselgeld(int restbetrag) {
+		int bezogene200 = 0;
+		int bezogene100 = 0;
+		int bezogene50 = 0;
+		int bezogene20 = 0;
+		int bezogene10 = 0;
+		while (restbetrag != 0) {
+			if (restbetrag >= 200 && muenzsaeulen.get(200).getMenge() > bezogene200) {
+				bezogene200 += 1;
+				restbetrag -= 200;
+			} else if (restbetrag >= 100 && muenzsaeulen.get(100).getMenge() > bezogene100) {
+				bezogene100 += 1;
+				restbetrag -= 100;
+			} else if (restbetrag >= 50 && muenzsaeulen.get(50).getMenge() > bezogene50) {
+				bezogene50 += 1;
+				restbetrag -= 50;
+			} else if (restbetrag >= 20 && muenzsaeulen.get(20).getMenge() > bezogene20) {
+				bezogene20 += 1;
+				restbetrag -= 20;
+			} else if (restbetrag >= 10 && muenzsaeulen.get(10).getMenge() > bezogene10) {
+				bezogene10 += 1;
+				restbetrag -= 10;
+			} else {
+				return false;
+			}
+		}
+		return true;
+	}
+
 }
