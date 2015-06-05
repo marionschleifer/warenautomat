@@ -12,7 +12,6 @@ public class StatistikEintrag {
 		this.name = name;
 		this.price = price;
 		this.verkauftAm = verkauftAm;
-		
 	}
 
 	public String getName() {

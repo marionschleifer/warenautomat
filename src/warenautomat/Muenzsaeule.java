@@ -6,6 +6,7 @@ public class Muenzsaeule {
 	private int muenzart;
 	private int menge = 0;
 
+
 	public Muenzsaeule(int muenzart) {
 		this.muenzart = muenzart;
 	}
@@ -34,6 +35,7 @@ public class Muenzsaeule {
 	public boolean hatPlatz(int anzahlNeueMuenzen) {
 		return menge + anzahlNeueMuenzen <= MAX_MUENZEN;
 	}
+
 
 	public void removeCoins(int anzahlMuenzen) {
 		if (menge - anzahlMuenzen < 0) {

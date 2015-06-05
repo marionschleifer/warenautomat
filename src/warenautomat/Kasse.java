@@ -67,7 +67,8 @@ public class Kasse {
 			return -200;
 		}
 		if (!muenzsaeule.hatPlatz(pAnzahl)) {
-			zuFuellendeMuenzsaeule = muenzsaeule; zuFuellendeMuenzen = muenzsaeule.vorhandenerPlatz();
+			zuFuellendeMuenzsaeule = muenzsaeule;
+			zuFuellendeMuenzen = muenzsaeule.vorhandenerPlatz();
 			return -pAnzahl + muenzsaeule.vorhandenerPlatz();
 		}
 		zuFuellendeMuenzsaeule = muenzsaeule;

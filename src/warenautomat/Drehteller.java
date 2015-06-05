@@ -46,7 +46,7 @@ public class Drehteller {
 	public int gibWarenMenge(String warenName) {
 		int menge = 0;
 		for (Fach fach : mFach) {
-			if ((fach.istWareImFach()) && (warenName.equals(fach.getWare().getName()))) {
+			if ((fach.istWareImFach()) && (warenName.equals(fach.getWare().getName())) && !fach.getWare().istAbgelaufen()) {
 				menge += 1;
 			}
 		}

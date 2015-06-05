@@ -162,15 +162,32 @@ public class AutomatTest {
 	}
 
 	@Test
+	public void testGibWarenMenge() throws ParseException {
+		DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.GERMAN);
+		Automat automat = new Automat();
+		assertEquals(0, automat.gibWarenMenge("Mars"));
+		automat.fuelleFach(1, "Mars", 1.2, df.parse("01.01.2016"));
+		assertEquals(1, automat.gibWarenMenge("Mars"));
+		automat.fuelleFach(2, "Mars", 1.2, df.parse("01.01.2016"));
+		assertEquals(2, automat.gibWarenMenge("Mars"));
+	}
+	
+	@Test
 	public void testGrenzeErreicht() throws ParseException {
 		DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.GERMAN);
 		Automat automat = new Automat();
-		automat.konfiguriereBestellung("Mars", 3, 20);
+		automat.konfiguriereBestellung("Mars", 2, 20);
 		automat.konfiguriereBestellung("Snickers", 2, 20);
+		SystemSoftware.setzeAktuellesDatum(WareTest.getDate("1.6.2015"));
+		
+		assertEquals(true, automat.grenzeErreicht("Mars"));
 		automat.fuelleFach(1, "Mars", 1.2, df.parse("01.01.2016"));
+		assertEquals(true, automat.grenzeErreicht("Mars"));
 		automat.fuelleFach(2, "Mars", 1.2, df.parse("01.01.2016"));
+		assertEquals(true, automat.grenzeErreicht("Mars"));
+		automat.fuelleFach(3, "Mars", 1.2, df.parse("01.01.2016"));
 		assertEquals(false, automat.grenzeErreicht("Mars"));
-		// automat.fuelleFach(3, "Mars", 1.2, df.parse("01.01.2016"));
-		// automat.fuelleFach(4, "Mars", 1.2, df.parse("01.01.2016"));
+		automat.fuelleFach(3, "Mars", 1.2, df.parse("01.01.2015"));
+		assertEquals(true, automat.grenzeErreicht("Mars"));
 	}
 }

@@ -144,12 +144,20 @@ public class Automat {
 			gibDrehteller(pDrehtellerNr).fuelleFach(null);
 			SystemSoftware.zeigeWareInGui(pDrehtellerNr, null, null);
 
-			// TODO: if grenzeErreicht -> Systemsoftware.bestellen
+			pruefeNachbestellung(ware);
 
 			return true;
 		}
 		return false;
 
+	}
+
+	private void pruefeNachbestellung(Ware ware) {
+		if (!grenzeErreicht(ware.getName()))
+			return;
+		
+		Bestellgrenze bestellgrenze = getBestellGrenzen().get(ware.getName());
+		SystemSoftware.bestellen(bestellgrenze.getName(), bestellgrenze.getBestellAnzahl());
 	}
 
 	/**
@@ -217,15 +225,21 @@ public class Automat {
 	}
 
 	public boolean grenzeErreicht(String warenName) {
-		int warenMenge = 0;
+		int warenMenge = gibWarenMenge(warenName);
+		Bestellgrenze bestellgrenze = bestellgrenzen.get(warenName);
+
+		// Keine Bestellgrenze vorhanden
+		if (bestellgrenze == null)
+			return false;
+
+		return warenMenge <= bestellgrenze.getBestellGrenze();
+	}
+
+	public int gibWarenMenge(String warenName) {
+		int menge = 0;
 		for (Drehteller drehteller : drehtellerListe) {
-			warenMenge += drehteller.gibWarenMenge(warenName);
-			if (warenMenge <= getBestellGrenzen().get(warenName).getBestellGrenze()) {
-				return true;
-			} else {
-				return false;
-			}
+			menge += drehteller.gibWarenMenge(warenName);
 		}
-		return false;
+		return menge;
 	}
 }

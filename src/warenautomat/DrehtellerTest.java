@@ -52,4 +52,23 @@ public class DrehtellerTest {
 		assertEquals(200, drehteller.gibTotalenWarenWert());
 	}
 
+	@Test
+	public void testgibWarenMenge() {
+		Drehteller drehteller = new Drehteller();
+		SystemSoftware.setzeAktuellesDatum(WareTest.getDate("1.6.2015"));
+		assertEquals(0, drehteller.gibWarenMenge("Mars"));
+		drehteller.fuelleFach(WareTest.getMars());
+		assertEquals(1, drehteller.gibWarenMenge("Mars"));
+		drehteller.drehen();
+		drehteller.fuelleFach(WareTest.getMars());
+		assertEquals(2, drehteller.gibWarenMenge("Mars"));
+		Ware marsAbgelaufen = new Ware("Mars", 120, WareTest.getDate("1.1.2015"));
+		drehteller.drehen();
+		drehteller.fuelleFach(marsAbgelaufen);
+		assertEquals(2, drehteller.gibWarenMenge("Mars"));
+		drehteller.drehen();
+		drehteller.fuelleFach(WareTest.getSnickers());
+		assertEquals(2, drehteller.gibWarenMenge("Mars"));
+		
+	}
 }

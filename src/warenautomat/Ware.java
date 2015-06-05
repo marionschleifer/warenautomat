@@ -20,7 +20,9 @@ public class Ware {
 	}
 
 	public int getPrice() {
-		return price;
+		if(!istAbgelaufen()) return price;
+		double discount = 0.1;
+		return (int) (5 * Math.round(price * discount / 5.0));
 	}
 
 	public Date getDate() {
@@ -28,7 +30,10 @@ public class Ware {
 	}
 
 	public int gibZustand() {
-		return istAbgelaufen() ? 2 : 1;
+		if (istAbgelaufen()) {
+			return 2;
+		} else
+			return 1;
 	}
 
 	public boolean istAbgelaufen() {

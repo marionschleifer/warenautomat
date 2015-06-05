@@ -64,4 +64,14 @@ public class WareTest {
 		assertEquals(1, getMars().gibZustand());
 		assertEquals(1, getSnickers().gibZustand());
 	}
+	
+	@Test
+	public void wareWertAbgelaufen() throws ParseException {
+		DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.GERMAN);
+		SystemSoftware.setzeAktuellesDatum(df.parse("01.06.2015"));
+		Ware ware1 = new Ware("Mars", 120, df.parse("01.01.2015"));
+		assertEquals(10, ware1.getPrice());
+		Ware ware2 = new Ware("Mars", 150, df.parse("01.01.2015"));
+		assertEquals(15, ware2.getPrice());
+	}
 }

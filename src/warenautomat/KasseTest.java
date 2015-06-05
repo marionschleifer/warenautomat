@@ -19,6 +19,7 @@ public class KasseTest {
 	public void testFuelleKasseNichtGenuegendPlatz() {
 		Kasse kasse = new Kasse(new Statistik());
 		assertEquals(-2, kasse.fuelleKasse(1.0, 102));
+		kasse.fuelleKasseBestaetigung();
 		assertEquals(100, kasse.gibMuenzsaeule(100).getMenge());
 	}
 
